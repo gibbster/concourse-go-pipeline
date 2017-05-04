@@ -7,6 +7,7 @@ image_resource:
 
 inputs:
 - name: pipeline
+- name: version
 - name: application
   path: gopath/src/github.com/cloudfoundry-community/simple-go-web-app
 
