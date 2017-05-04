@@ -1,10 +1,10 @@
 ---
 resources:
-- name: resource-tutorial
+- name: pipeline
   type: git
   source:
     uri: https://github.com/gibbster/concourse-go-pipeline.git
-- name: resource-app
+- name: application
   type: git
   source:
     uri: https://github.com/cloudfoundry-community/simple-go-web-app.git
@@ -19,17 +19,18 @@ resources:
     key: current-version
     access_key_id: {{s3-access-key-id}}
     secret_access_key: {{s3-secret-access-key}}
+    region_name: us-west-2
     initial_version: 1.0.0
 
 jobs:
-- name: job-test-app
+- name: test-app
   public: true
   plan:
-  - get: resource-tutorial
-  - get: resource-app
+  - get: pipeline
+  - get: application
     trigger: true
   - task: web-app-tests
-    file: resource-tutorial/ci/task_run_tests.yml
+    file: pipeline/ci/task_run_tests.yml
     on_success:
       put: slack
       params:
@@ -37,18 +38,18 @@ jobs:
           :white_check_mark: Tests ran successfully
           http://192.168.100.4:8080/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME
 
-- name: job-build-rc
+- name: build-rc
   public: true
   serial_groups: [version]
   plan:
-  - get: resource-tutorial
-  - get: resource-app
-    passed: [job-test-app]
+  - get: pipeline
+  - get: application
+    passed: [test-app]
     trigger: true
   - get: version
     params: {pre: rc}
   - task: build-rc
-    file: resource-tutorial/ci/task_build_rc.yml
+    file: pipeline/ci/task_build_rc.yml
     on_success:
       put: slack
       params:
