@@ -3,7 +3,7 @@ resources:
 - name: resource-tutorial
   type: git
   source:
-    uri: https://github.com/starkandwayne/concourse-tutorial.git
+    uri: https://github.com/gibbster/concourse-go-pipeline.git
 - name: resource-app
   type: git
   source:
@@ -12,6 +12,14 @@ resources:
   type: slack-notification
   source:
     url: {{slack-webhook-url}}
+- name: version
+  type: semver
+  source:
+    bucket: concourse-go-pipeline
+    key: current-version
+    access_key_id: {{s3-access-key-id}}
+    secret_access_key: {{s3-secret-access-key}}
+    initial_version: 1.0.0
 
 jobs:
 - name: job-test-app
@@ -21,12 +29,31 @@ jobs:
   - get: resource-app
     trigger: true
   - task: web-app-tests
-    file: resource-tutorial/10_job_inputs/task_run_tests.yml
+    file: resource-tutorial/ci/task_run_tests.yml
     on_success:
       put: slack
       params:
         text: |
           :white_check_mark: Tests ran successfully
+          http://192.168.100.4:8080/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME
+
+- name: job-build-rc
+  public: true
+  serial_groups: [version]
+  plan:
+  - get: resource-tutorial
+  - get: resource-app
+    passed: [job-test-app]
+    trigger: true
+  - get: version
+    params: {pre: rc}
+  - task: build-rc
+    file: resource-tutorial/ci/task_build_rc.yml
+    on_success:
+      put: slack
+      params:
+        text: |
+          :white_check_mark: Release candidate built successfully
           http://192.168.100.4:8080/teams/$BUILD_TEAM_NAME/pipelines/$BUILD_PIPELINE_NAME/jobs/$BUILD_JOB_NAME/builds/$BUILD_NAME
 
 resource_types:
