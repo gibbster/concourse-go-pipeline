@@ -13,4 +13,4 @@ cd gopath/src/github.com/cloudfoundry-community/simple-go-web-app/
 go build ./...
 ls -la
 ls ..
-ls ..
+ls ../..
