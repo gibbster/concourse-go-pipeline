@@ -12,6 +12,13 @@ resources:
   type: slack-notification
   source:
     url: {{slack-webhook-url}}
+- name: my-product-rc
+  type: s3
+  source:
+    bucket: concourse-go-pipeline
+    regexp: simple-go-web-app-(.*).tgz
+    access_key_id: {{s3-access-key-id}}
+    secret_access_key: {{s3-secret-access-key}}
 - name: version
   type: semver
   source:
@@ -50,6 +57,8 @@ jobs:
     params: {pre: rc}
   - task: build-rc
     file: pipeline/ci/task_build_rc.yml
+  - put: version
+    params: {file: version/number}
     on_success:
       put: slack
       params:
