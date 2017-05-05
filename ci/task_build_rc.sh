@@ -6,7 +6,6 @@ ls -la
 VERSION=$(cat version/number)
 echo $VERSION
 pwd
-mkdir build-artifacts
 ARTIFACT=$(pwd)/build-artifacts/simple-go-web-app-$VERSION
 echo $ARTIFACT
 
