@@ -21,6 +21,14 @@ resources:
     secret_access_key: {{s3-secret-access-key}}
     region_name: us-west-2
     initial_version: 1.0.0
+- name: my-product-rc
+  type: s3
+  source:
+    bucket: concourse-go-pipeline
+    regexp: simple-go-web-app-(.*)
+    access_key_id: {{s3-access-key-id}}
+    secret_access_key: {{s3-secret-access-key}}
+    region_name: us-west-2
 
 jobs:
 - name: test-app
@@ -52,6 +60,8 @@ jobs:
     file: pipeline/ci/task_build_rc.yml
   - put: version
     params: {file: version/number}
+  - put: my-product-rc
+    params: {file: build-artifacts/simple-go-app-*}
     on_success:
       put: slack
       params:
