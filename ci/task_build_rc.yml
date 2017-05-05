@@ -11,5 +11,8 @@ inputs:
 - name: application
   path: gopath/src/github.com/cloudfoundry-community/simple-go-web-app
 
+outputs:
+- name: build-artifacts
+
 run:
   path: pipeline/ci/task_build_rc.sh

@@ -6,6 +6,9 @@ ls -la
 VERSION=$(cat version/number)
 echo $VERSION
 pwd
+mkdir build-artifacts
+ARTIFACT=$(pwd)/build-artifacts/simple-go-web-app-$VERSION
+echo $ARTIFACT
 
 # application input is in gopath/src/github.com/cloudfoundry-community/simple-go-web-app folder
 # $GOPATH is gopath/ folder
@@ -15,3 +18,5 @@ cd gopath/src/github.com/cloudfoundry-community/simple-go-web-app/
 go build ./...
 ls -la
 pwd
+cp simple-go-web-app $ARTIFACT
+ls $(pwd)/build-artifacts/
