@@ -18,4 +18,3 @@ go build ./...
 ls -la
 pwd
 cp simple-go-web-app $ARTIFACT
-ls $(pwd)/build-artifacts/
