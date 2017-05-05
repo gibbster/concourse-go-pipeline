@@ -61,7 +61,7 @@ jobs:
   - put: version
     params: {file: version/number}
   - put: my-product-rc
-    params: {file: build-artifacts/simple-go-app-*}
+    params: {file: build-artifacts/simple-go-web-app-*}
     on_success:
       put: slack
       params:
