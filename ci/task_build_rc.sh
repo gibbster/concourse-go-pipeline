@@ -4,7 +4,7 @@ set -e
 
 ls -la
 VERSION=$(cat version/number)
-cat $VERSION
+echo $VERSION
 pwd
 
 # application input is in gopath/src/github.com/cloudfoundry-community/simple-go-web-app folder
