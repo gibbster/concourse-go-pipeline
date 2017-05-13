@@ -2,7 +2,6 @@
 
 set -e
 
-ls -la
 VERSION=$(cat version/number)
 ARTIFACT=$(pwd)/build-artifacts/simple-go-web-app-$VERSION
 
