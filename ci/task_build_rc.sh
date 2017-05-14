@@ -16,4 +16,5 @@ cd gopath/src/github.com/cloudfoundry-community/simple-go-web-app/
 
 go build ./...
 cp simple-go-web-app $ARTIFACT
-cp simple-go-web-app $BUILD_PATH/build-artifacts/simple-web-go-app
+cp simple-go-web-app $BUILD_PATH/build-artifacts/
+ls $BUILD_PATH/build-artifacts
