@@ -71,11 +71,9 @@ jobs:
     params: {file: build-artifacts/simple-go-web-app-*}
   - put: docker-product-rc
     params: 
-      build: pipeline/ci
+      build: build-artifacts
       tag: version/number
       tag_prefix: v
-    build-args:
-      version: build-artifacts/simple-go-web-app
     on_success:
       put: slack
       params:
