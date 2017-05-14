@@ -1,11 +1,14 @@
 #!/bin/sh
 
 set -e
+set -x
 
 VERSION=$(cat version/number)
 ARTIFACT=$(pwd)/build-artifacts/simple-go-web-app-$VERSION
+BASEPATH=$(pwd)
 
 cp pipeline/ci/Dockerfile build-artifacts/
+ls 
 
 # application input is in gopath/src/github.com/cloudfoundry-community/simple-go-web-app folder
 # $GOPATH is gopath/ folder
@@ -14,3 +17,5 @@ cd gopath/src/github.com/cloudfoundry-community/simple-go-web-app/
 
 go build ./...
 cp simple-go-web-app $ARTIFACT
+pwd
+ls $(BASEPATH)/build-artifacts
