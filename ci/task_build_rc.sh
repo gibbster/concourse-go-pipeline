@@ -8,7 +8,6 @@ ARTIFACT=$(pwd)/build-artifacts/simple-go-web-app-$VERSION
 BUILD_PATH=$(pwd)
 
 cp pipeline/ci/Dockerfile build-artifacts/
-ls 
 
 # application input is in gopath/src/github.com/cloudfoundry-community/simple-go-web-app folder
 # $GOPATH is gopath/ folder
@@ -17,5 +16,4 @@ cd gopath/src/github.com/cloudfoundry-community/simple-go-web-app/
 
 go build ./...
 cp simple-go-web-app $ARTIFACT
-pwd
-ls $BUILD_PATH/build-artifacts
+cp simple-go-web-app $BUILD_PATH/build-artifacts/simple-web-go-app
