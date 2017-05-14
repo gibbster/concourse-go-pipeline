@@ -5,7 +5,7 @@ set -e
 VERSION=$(cat version/number)
 ARTIFACT=$(pwd)/build-artifacts/simple-go-web-app-$VERSION
 
-cp pipeline/Dockerfile build-artifacts/
+cp pipeline/ci/Dockerfile build-artifacts/
 
 # application input is in gopath/src/github.com/cloudfoundry-community/simple-go-web-app folder
 # $GOPATH is gopath/ folder
